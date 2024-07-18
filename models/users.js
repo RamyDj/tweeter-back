@@ -5,6 +5,10 @@ const userSchema = mongoose.Schema({
     username: String,
     password: String,
     token: String,
+    likeTweets : { type: mongoose.Schema.Types.ObjectId, ref: 'tweets' },
+    //liketweet => clef etrangère vers tweet 
+    //likeTweet : [id des tweets liké par user] 
+    // likeTweet: { type: mongoose.Schema.Types.ObjectId, ref: 'tweets' },
 });
 
 const User = mongoose.model('users', userSchema);

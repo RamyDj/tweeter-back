@@ -1,8 +1,9 @@
 var express = require('express');
 var router = express.Router();
-const Tweet = require('../models/tweet');
+const Tweet = require('../models/tweets');
 const { checkBody } = require('../modules/checkBody');
 const moment = require('moment');
+const User = require('../models/users');
 
 // extract hashatg from message
 function extractHashtag(message) {
@@ -13,20 +14,25 @@ function extractHashtag(message) {
     return null;
 }
 
+/*extrat message from messagebar
+// function extractMessage(message) {
+//     const match = message.match(/^(.*?)#/);
+//     if(match) {
+//         return match[1];
+//     }
+//     return null;
+ }*/
 
 router.post('/newTweet', (req, res) => {
 	if (!checkBody(req.body, ['message'])) {
     res.json({ result: false, error: 'Missing or empty fields' });
     return;
   }
-
     const {message} = req.body
-
     const newTweet = new Tweet({
-        user: req.user.id,
         message: message,
         hashtag: extractHashtag(message),
-        createdAt : moment().toDate()
+        createdAt : moment().startOf()
     })
 
     newTweet.save()
@@ -35,15 +41,10 @@ router.post('/newTweet', (req, res) => {
     })
 })
 
-/* function extractHashtag(message) {
-    const match = message.match(/#(\w+)/);
-    if(match) {
-    return match[0];
-    }
-    return match ? match[1] : '';
+router.get('/', (req, res)=>{
 
-    const hashtag = extractHashtag(message);
-}
-*/
+})
+
+
 
 module.exports = router;
