@@ -3,15 +3,15 @@ var router = express.Router();
 const Tweet = require('../models/tweets');
 const { checkBody } = require('../modules/checkBody');
 const moment = require('moment');
-const User = require('../models/users');
 
 // extract hashatg from message
 function extractHashtag(message) {
-    const match = message.match(/#(\w+)/)
+    const regex = /#(\w+)/g
+    const match = message.match(regex);
         if(match) {
-        return match[0];
+        return match.map(match => match.trim());
         }
-    return null;
+    return [];
 }
 
 /*extrat message from messagebar
@@ -42,6 +42,10 @@ router.post('/newTweet', (req, res) => {
 })
 
 router.get('/', (req, res)=>{
+    Tweet.find()
+    .then(data =>
+    {res.json({allTweet : data})}
+    )
 
 })
 
