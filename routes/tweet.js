@@ -30,9 +30,12 @@ router.post('/newTweet', (req, res) => {
   }
     const {message} = req.body
     const newTweet = new Tweet({
+        username : req.body.username,
+        firstname : req.body.firstname,
         message: message,
         hashtag: extractHashtag(message),
-        createdAt : moment().startOf()
+        createdAt : moment().startOf(),
+        likedBy : []
     })
 
     newTweet.save()
@@ -60,7 +63,8 @@ router.delete('/deleteTweet/:tweetId', (req, res) =>{
 })
 
 router.put('/addLiker', (req, res)=>{
-    Tweet
+    Tweet.updateOne({_id : req.body.tweetId}, {likedBy : [...likedBy, req.body.userId]})
+    .then(data => res.json({data}))
 })
 
 module.exports = router;
