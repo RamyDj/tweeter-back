@@ -60,12 +60,7 @@ router.delete('/deleteTweet/:tweetId', (req, res) =>{
 })
 
 router.put('/addLiker', (req, res)=>{
-    
+    Tweet
 })
-
-router.put('/addLiker', (req, res)=>{
-    
-})
-
 
 module.exports = router;
