@@ -63,8 +63,16 @@ router.delete('/deleteTweet/:tweetId', (req, res) =>{
 })
 
 router.put('/addLiker', (req, res)=>{
-    Tweet.updateOne({_id : req.body.tweetId}, {likedBy : [...likedBy, req.body.userId]})
-    .then(data => res.json({data}))
+    Tweet.findOne({_id : req.body.tweetId}).then(data=>{
+        //data.likedBy.push(req.body.userId)
+        let liked = []
+        liked = [...data.likedBy]
+        liked = liked.push(req.body.userId)
+       res.json({result : liked})
+       /* const liked = data.likedBy.push(req.body.userId)
+        Tweet.updateOne({_id : req.body.tweetId}, {likedBy : liked})
+        .then(datas => res.json({result : liked}))*/
+    })
 })
 
 module.exports = router;
