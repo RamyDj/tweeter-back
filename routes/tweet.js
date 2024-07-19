@@ -62,17 +62,26 @@ router.delete('/deleteTweet/:tweetId', (req, res) =>{
     })
 })
 
+// router.put('/addLiker', (req, res)=>{
+//     Tweet.updateOne({_id : req.body.tweetId}, {likedBy : [...likedBy, req.body.userId]})
+//     .then(data => res.json({data}))
+// })
+
 router.put('/addLiker', (req, res)=>{
-    Tweet.findOne({_id : req.body.tweetId}).then(data=>{
-        //data.likedBy.push(req.body.userId)
-        let liked = []
-        liked = [...data.likedBy]
-        liked = liked.push(req.body.userId)
-       res.json({result : liked})
-       /* const liked = data.likedBy.push(req.body.userId)
-        Tweet.updateOne({_id : req.body.tweetId}, {likedBy : liked})
-        .then(datas => res.json({result : liked}))*/
-    })
+    Tweet.updateOne({_id : req.body.tweetId},  { $addToSet: { likedBy: req.body.userId } })
+    .then(() => res.json({ message: 'User liked the tweet successfully' }))
+})
+
+router.put('/removeLiker', (req, res)=>{
+    Tweet.updateOne(
+        { _id: req.body.tweetId},
+      {$pull : {likedBy : req.body.userId}}
+      ).then(data=> res.json({data}))
+    
+})
+
+router.post('/getByHashtag', (req, res)=>{
+    Tweet.find({hashtag : req.body.hashtag}).then(data=> res.json({data}))
 })
 
 module.exports = router;
