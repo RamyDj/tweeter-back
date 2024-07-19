@@ -50,5 +50,22 @@ router.get('/', (req, res)=>{
 })
 
 
+router.delete('/deleteTweet/:tweetId', (req, res) =>{
+    const id = req.params.tweetId
+    Tweet.deleteOne({_id : `${id}`})
+    .then(data=>{
+        data.deletedCount === 1 ? res.json({result : 'Delete successfull'}) : res.json({result : "Error, tweet not found."})
+       
+    })
+})
+
+router.put('/addLiker', (req, res)=>{
+    
+})
+
+router.put('/addLiker', (req, res)=>{
+    
+})
+
 
 module.exports = router;
