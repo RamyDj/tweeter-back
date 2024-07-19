@@ -55,11 +55,16 @@ router.get('/', (req, res)=>{
 
 router.delete('/deleteTweet/:tweetId', (req, res) =>{
     const id = req.params.tweetId
-    Tweet.deleteOne({_id : `${id}`})
+    const tweet = Tweet.findById(id);
+    const { username } = req.body;
+    if (tweet.username !== username) {
+        return res.json({ result: 'Unauthorized to delete this tweet.' });
+    }         Tweet.deleteOne({_id : `${id}`})
     .then(data=>{
         data.deletedCount === 1 ? res.json({result : 'Delete successfull'}) : res.json({result : "Error, tweet not found."})
        
     })
+   
 })
 
 // router.put('/addLiker', (req, res)=>{
